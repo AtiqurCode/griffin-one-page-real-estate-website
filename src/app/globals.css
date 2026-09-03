@@ -1,26 +1,228 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme inline {
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ================================================================== *
+ * Griffin Brothers — theme tokens (light default + dark)
+ *
+ * Resolution order:
+ *   1. :root                          → light
+ *   2. @media (dark) :root:not(.light) → dark, when the OS prefers dark
+ *   3. :root[data-theme="light"]      → user forced light
+ *   4. :root[data-theme="dark"]       → user forced dark
+ * The inline script in layout.js sets data-theme before first paint.
+ * ================================================================== */
+
+:root {
+  --tm-bg: #f4eee1;
+  --tm-bg-2: #efe7d6;
+  --tm-card: #fbf7ee;
+  --tm-ink: #201c15;
+  --tm-ink-soft: #4b4436;
+  --tm-rule: #d8cdb6;
+  --tm-brass: #8a6c34;
+  --tm-brass-soft: #a88a4d;
+  --tm-brass-deep: #6f5526;
+
+  --tm-panel-bg: #1c1810; /* dark bands (contact) in light mode */
+  --tm-panel-ink: #f1e9d8;
+  --tm-panel-ink-soft: #cdbf9f;
+  --tm-panel-rule: rgba(233, 211, 163, 0.24);
+
+  --tm-footer-bg: #16130d;
+  --tm-footer-ink: #b7ac93;
+  --tm-footer-ink-strong: #e7dcc3;
+
+  --tm-shadow: 30px 60px -40px rgba(40, 30, 12, 0.55);
+
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --tm-bg: #14110c;
+    --tm-bg-2: #1b1710;
+    --tm-card: #221d15;
+    --tm-ink: #efe5d3;
+    --tm-ink-soft: #b4a893;
+    --tm-rule: #372f24;
+    --tm-brass: #cca768;
+    --tm-brass-soft: #b7935a;
+    --tm-brass-deep: #dcbd82;
+
+    --tm-panel-bg: #0e0c08;
+    --tm-panel-ink: #efe5d3;
+    --tm-panel-ink-soft: #b4a893;
+    --tm-panel-rule: rgba(233, 211, 163, 0.16);
+
+    --tm-footer-bg: #0c0a06;
+    --tm-footer-ink: #8f8571;
+    --tm-footer-ink-strong: #d8cdb6;
+
+    --tm-shadow: 30px 70px -45px rgba(0, 0, 0, 0.85);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --tm-bg: #14110c;
+  --tm-bg-2: #1b1710;
+  --tm-card: #221d15;
+  --tm-ink: #efe5d3;
+  --tm-ink-soft: #b4a893;
+  --tm-rule: #372f24;
+  --tm-brass: #cca768;
+  --tm-brass-soft: #b7935a;
+  --tm-brass-deep: #dcbd82;
+
+  --tm-panel-bg: #0e0c08;
+  --tm-panel-ink: #efe5d3;
+  --tm-panel-ink-soft: #b4a893;
+  --tm-panel-rule: rgba(233, 211, 163, 0.16);
+
+  --tm-footer-bg: #0c0a06;
+  --tm-footer-ink: #8f8571;
+  --tm-footer-ink-strong: #d8cdb6;
+
+  --tm-shadow: 30px 70px -45px rgba(0, 0, 0, 0.85);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--tm-bg);
+  color: var(--tm-ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+/* ------------------------------------------------------------------ *
+ * Brand material: wood grain (echoes the slat screens on the buildings)
+ * ------------------------------------------------------------------ */
+
+.gb-slats {
+  background-color: #6b4a30;
+  background-image:
+    linear-gradient(0deg, #4f3521 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(
+      0deg,
+      #5c3f28 0 9px,
+      #6f4c31 9px 18px,
+      #7d5637 18px 19px,
+      #6f4c31 19px 28px
+    );
+  background-size: 100% 28px, 100% 100%;
+}
+
+.gb-planks {
+  background-color: #6c4a30;
+  background-image:
+    linear-gradient(90deg, rgba(31, 20, 12, 0.55) 0 2px, transparent 2px 3px),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035) 0 1px,
+      transparent 1px 7px
+    ),
+    linear-gradient(90deg, #6f4c31 0 46px, #64442b 46px 48px),
+    linear-gradient(180deg, #79532f, #5a3d26);
+  background-size: 48px 100%, 8px 100%, 48px 100%, 100% 100%;
+}
+
+/* ------------------------------------------------------------------ *
+ * Theme toggle (used in every header)
+ * ------------------------------------------------------------------ */
+
+.gb-theme-toggle {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--tm-rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tm-ink-soft);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.gb-theme-toggle:hover {
+  color: var(--tm-ink);
+  border-color: var(--tm-brass);
+}
+
+.gb-theme-toggle:focus-visible {
+  outline: 2px solid var(--tm-brass);
+  outline-offset: 2px;
+}
+
+.gb-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Icon reflects the active theme. Default (no explicit choice) → follow the OS. */
+.gb-icon--sun {
+  display: none;
+}
+.gb-icon--moon {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .gb-icon--sun {
+    display: block;
+  }
+  :root:not([data-theme="light"]) .gb-icon--moon {
+    display: none;
+  }
+}
+
+:root[data-theme="dark"] .gb-icon--sun {
+  display: block;
+}
+:root[data-theme="dark"] .gb-icon--moon {
+  display: none;
+}
+:root[data-theme="light"] .gb-icon--sun {
+  display: none;
+}
+:root[data-theme="light"] .gb-icon--moon {
+  display: block;
 }
