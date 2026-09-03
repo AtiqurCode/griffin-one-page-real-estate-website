@@ -12,6 +12,10 @@ export default function ThemeToggle({ className = "" }) {
         ? "dark"
         : "light");
     const next = current === "dark" ? "light" : "dark";
+
+    root.classList.add("theme-transition");
+    window.setTimeout(() => root.classList.remove("theme-transition"), 340);
+
     root.dataset.theme = next;
     try {
       localStorage.setItem("gb-theme", next);

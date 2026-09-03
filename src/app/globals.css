@@ -179,6 +179,7 @@ a {
   background: transparent;
   color: var(--tm-ink-soft);
   cursor: pointer;
+  overflow: hidden;
   transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -187,42 +188,124 @@ a {
   border-color: var(--tm-brass);
 }
 
+.gb-theme-toggle:active {
+  transform: scale(0.94);
+}
+
 .gb-theme-toggle:focus-visible {
   outline: 2px solid var(--tm-brass);
   outline-offset: 2px;
 }
 
+/* Both icons stack in one grid cell and cross-fade / rotate on theme change. */
 .gb-icon {
+  grid-area: 1 / 1;
   width: 18px;
   height: 18px;
+  transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* Icon reflects the active theme. Default (no explicit choice) → follow the OS. */
 .gb-icon--sun {
-  display: none;
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.4);
 }
 .gb-icon--moon {
-  display: block;
+  opacity: 1;
+  transform: rotate(0) scale(1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .gb-icon--sun {
-    display: block;
+    opacity: 1;
+    transform: rotate(0) scale(1);
   }
   :root:not([data-theme="light"]) .gb-icon--moon {
-    display: none;
+    opacity: 0;
+    transform: rotate(90deg) scale(0.4);
   }
 }
 
 :root[data-theme="dark"] .gb-icon--sun {
-  display: block;
+  opacity: 1;
+  transform: rotate(0) scale(1);
 }
 :root[data-theme="dark"] .gb-icon--moon {
-  display: none;
+  opacity: 0;
+  transform: rotate(90deg) scale(0.4);
 }
 :root[data-theme="light"] .gb-icon--sun {
-  display: none;
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.4);
 }
 :root[data-theme="light"] .gb-icon--moon {
-  display: block;
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion: scroll reveal + theme cross-fade
+ * ------------------------------------------------------------------ */
+
+/* Hidden only while JS is present to reveal them. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s cubic-bezier(0.2, 0.6, 0.2, 1),
+    transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+.js [data-reveal="left"] {
+  transform: translateX(-28px);
+}
+.js [data-reveal="right"] {
+  transform: translateX(28px);
+}
+.js [data-reveal="scale"] {
+  transform: scale(0.94);
+}
+.js [data-reveal="fade"] {
+  transform: none;
+}
+.js [data-reveal="grow"] {
+  opacity: 1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.js [data-reveal]:not(.is-revealed) {
+  will-change: opacity, transform;
+}
+
+.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Smooth palette change only for the moment a theme switch happens. */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition: background-color 0.32s ease, color 0.32s ease,
+    border-color 0.32s ease, fill 0.32s ease, box-shadow 0.32s ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .gb-icon {
+    transition: opacity 0.2s ease;
+    transform: none !important;
+  }
+}
+
+@media print {
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

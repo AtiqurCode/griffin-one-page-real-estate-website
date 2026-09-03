@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import s from "./Gallery.module.css";
 import ThemeToggle from "@/components/ThemeToggle";
+import ScrollReveal from "@/components/ScrollReveal";
 import { gallery } from "@/lib/site";
 
 export const metadata = {
@@ -13,6 +14,8 @@ export const metadata = {
 export default function GalleryPage() {
   return (
     <div className={s.root}>
+      <ScrollReveal />
+
       <header className={s.header}>
         <div className={s.headerRow}>
           <div className={s.headerLeft}>
@@ -38,10 +41,14 @@ export default function GalleryPage() {
         </div>
       </header>
 
-      <section className={s.intro}>
-        <p className={s.kicker}>Gallery</p>
-        <h1 className={s.title}>Properties &amp; the work behind them.</h1>
-        <p className={s.lede}>
+      <section className={s.intro} data-reveal-group>
+        <p className={s.kicker} data-reveal>
+          Gallery
+        </p>
+        <h1 className={s.title} data-reveal>
+          Properties &amp; the work behind them.
+        </h1>
+        <p className={s.lede} data-reveal>
           Buildings we own and manage across the Shoals, plus a few moments from
           running the business. This page grows as projects are finished and new
           photos come in.
@@ -52,7 +59,7 @@ export default function GalleryPage() {
 
       <div className={s.grid}>
         {gallery.map((g, i) => (
-          <figure className={s.item} key={g.src}>
+          <figure className={s.item} key={g.src} data-reveal="scale">
             <div className={s.frame}>
               <Image
                 src={g.src}
@@ -69,7 +76,7 @@ export default function GalleryPage() {
             </figcaption>
           </figure>
         ))}
-        <div className={s.note}>
+        <div className={s.note} data-reveal="scale">
           <b>More on the way</b>
           <p>
             This gallery fills out as projects finish and new photos come in —

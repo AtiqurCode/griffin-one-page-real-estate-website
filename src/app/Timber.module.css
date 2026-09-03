@@ -13,6 +13,14 @@
   background: color-mix(in srgb, var(--tm-bg) 90%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--tm-rule);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+:global(html.is-scrolled) .header {
+  background: color-mix(in srgb, var(--tm-bg) 97%, transparent);
+  box-shadow: 0 10px 30px -18px rgba(20, 15, 6, 0.45);
+  border-bottom-color: color-mix(in srgb, var(--tm-rule) 60%, transparent);
 }
 
 .headerRow {
@@ -83,20 +91,36 @@
 }
 
 .navLink {
+  position: relative;
   font-size: 0.76rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--tm-ink-soft);
   padding: 0.3rem 0;
-  border-bottom: 1px solid transparent;
   white-space: nowrap;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--tm-brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 .navLink:hover {
   color: var(--tm-ink);
-  border-color: var(--tm-brass);
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
 }
 
 .menu {
@@ -148,6 +172,10 @@
   border-bottom: 1px solid var(--tm-rule);
 }
 
+.menuPanel .navLink::after {
+  display: none;
+}
+
 .menuPanel .navLink:last-child {
   border-bottom: 0;
 }
@@ -160,11 +188,31 @@
   display: flex;
   align-items: flex-end;
   isolation: isolate;
+  overflow: hidden;
 }
 
 .heroImg {
   object-fit: cover;
   z-index: -2;
+}
+
+:global(html.js) .heroImg {
+  animation: heroSettle 9s cubic-bezier(0.16, 0.5, 0.2, 1) both;
+}
+
+@keyframes heroSettle {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html.js) .heroImg {
+    animation: none;
+  }
 }
 
 .hero::after {
@@ -261,7 +309,23 @@
   text-transform: uppercase;
   text-decoration: none;
   border: 1px solid #c99d55;
-  transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  transition: background-color 0.18s ease, color 0.18s ease,
+    transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.18s ease;
+}
+
+.btn::after {
+  content: "→";
+  font-size: 0.85em;
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+.btn:hover::after {
+  transform: translateX(4px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .btnSolid {
@@ -272,6 +336,7 @@
 .btnSolid:hover {
   background: #d9b06c;
   transform: translateY(-2px);
+  box-shadow: 0 14px 30px -14px rgba(201, 157, 85, 0.6);
 }
 
 .btnGhost {
@@ -515,6 +580,21 @@
   align-items: center;
   text-align: center;
   gap: 0.8rem;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.locCard:hover {
+  transform: translateY(-5px);
+  border-color: #c6b184;
+  box-shadow: 0 20px 40px -26px rgba(45, 32, 12, 0.5);
+}
+
+.locCard .locLogo img {
+  transition: transform 0.3s ease;
+}
+
+.locCard:hover .locLogo img {
+  transform: scale(1.05);
 }
 
 .locLogo {
@@ -788,5 +868,23 @@
   /* centre the odd one out instead of leaving it stranded */
   .locCard:last-child:nth-child(odd) {
     grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .locCard,
+  .locCard:hover,
+  .btn,
+  .btn:hover,
+  .btnSolid:hover,
+  .btnGhost:hover,
+  .btn:active,
+  .divRow:hover .divMedia img,
+  .locCard:hover .locLogo img {
+    transform: none;
+  }
+  .btn::after,
+  .navLink::after {
+    transition: none;
   }
 }

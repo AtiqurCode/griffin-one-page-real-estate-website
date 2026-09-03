@@ -30,8 +30,9 @@ export const viewport = {
   ],
 };
 
-// Runs before first paint so the stored theme is applied with no flash.
-const themeScript = `(function(){try{var m=localStorage.getItem('gb-theme');if(m==='dark'||m==='light'){document.documentElement.setAttribute('data-theme',m);}}catch(e){}})();`;
+// Runs before first paint: apply the stored theme with no flash, and flag that
+// JS is on so scroll-reveal styles only hide content when they can un-hide it.
+const themeScript = `(function(){var d=document.documentElement;d.classList.add('js');try{var m=localStorage.getItem('gb-theme');if(m==='dark'||m==='light'){d.setAttribute('data-theme',m);}}catch(e){}})();`;
 
 export default function RootLayout({ children }) {
   return (

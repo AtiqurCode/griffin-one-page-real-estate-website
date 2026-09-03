@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import s from "./Timber.module.css";
 import ThemeToggle from "@/components/ThemeToggle";
+import ScrollReveal from "@/components/ScrollReveal";
 import { company, divisions, locations, nav } from "@/lib/site";
 
 function Brand() {
@@ -41,6 +42,8 @@ function MenuIcon() {
 export default function Home() {
   return (
     <div className={s.root} id="top">
+      <ScrollReveal />
+
       <header className={s.header}>
         <div className={s.headerRow}>
           <Brand />
@@ -82,16 +85,20 @@ export default function Home() {
           priority
           sizes="100vw"
         />
-        <div className={s.heroInner}>
-          <p className={s.heroKicker}>Family-owned · {company.regionLong}</p>
-          <h1 className={s.heroLines}>
+        <div className={s.heroInner} data-reveal-group>
+          <p className={s.heroKicker} data-reveal>
+            Family-owned · {company.regionLong}
+          </p>
+          <h1 className={s.heroLines} data-reveal>
             <span>We own it.</span>
             <span>We build it.</span>
             <span>We make it work.</span>
           </h1>
-          <div className={s.heroRule} />
-          <p className={s.heroSub}>{company.heroSub}</p>
-          <div className={s.heroBtns}>
+          <div className={s.heroRule} data-reveal="grow" />
+          <p className={s.heroSub} data-reveal>
+            {company.heroSub}
+          </p>
+          <div className={s.heroBtns} data-reveal>
             <a href="#locations" className={`${s.btn} ${s.btnSolid}`}>
               View our properties
             </a>
@@ -105,8 +112,8 @@ export default function Home() {
 
       {/* ----------------------------- family ---------------------------- */}
       <section className={s.family}>
-        <div className={s.familyGrid}>
-          <div className={s.familyFrame}>
+        <div className={s.familyGrid} data-reveal-group>
+          <div className={s.familyFrame} data-reveal="left">
             <Image
               src="/photos/founders-illustration.jpg"
               alt="Ink illustration of Jeff and Lynn in front of a Griffin Brothers building"
@@ -114,7 +121,7 @@ export default function Home() {
               sizes="(max-width: 900px) 90vw, 40vw"
             />
           </div>
-          <div>
+          <div data-reveal="right">
             <p className={s.familyStatement}>{company.familyStatement}</p>
             <p className={s.familyMeta}>
               <span aria-hidden /> {company.founders} · {company.values}
@@ -134,7 +141,7 @@ export default function Home() {
       {/* ---------------------------- divisions -------------------------- */}
       <section className={s.divisions} id="divisions">
         <div className={s.divisionsHead}>
-          <div className={s.sectionHead}>
+          <div className={s.sectionHead} data-reveal>
             <span className={s.sectionIndex}>Divisions</span>
             <h2 className={s.sectionTitle}>
               Five divisions, one family running all of them.
@@ -145,7 +152,7 @@ export default function Home() {
         {divisions.map((d, i) => (
           <article className={s.divRow} key={d.id}>
             {d.image ? (
-              <div className={s.divMedia}>
+              <div className={s.divMedia} data-reveal="scale">
                 <Image
                   src={d.image}
                   alt={d.alt}
@@ -154,7 +161,7 @@ export default function Home() {
                 />
               </div>
             ) : (
-              <div className={`${s.divPanel} gb-planks`}>
+              <div className={`${s.divPanel} gb-planks`} data-reveal="scale">
                 <Image
                   className={s.divPanelMark}
                   src="/brand/griffin-cream.png"
@@ -166,7 +173,7 @@ export default function Home() {
                 <span className={s.divPanelNote}>Photography coming soon</span>
               </div>
             )}
-            <div className={s.divText}>
+            <div className={s.divText} data-reveal>
               <span className={s.divNo}>
                 {String(i + 1).padStart(2, "0")} / 05
               </span>
@@ -179,13 +186,13 @@ export default function Home() {
 
       {/* ---------------------------- locations -------------------------- */}
       <section className={s.section} id="locations">
-        <div className={s.sectionHead}>
+        <div className={s.sectionHead} data-reveal>
           <span className={s.sectionIndex}>Property Locations</span>
           <h2 className={s.sectionTitle}>Where you&rsquo;ll find us.</h2>
         </div>
-        <div className={s.locGrid}>
+        <div className={s.locGrid} data-reveal-group>
           {locations.map((l) => (
-            <div className={s.locCard} key={l.name}>
+            <div className={s.locCard} key={l.name} data-reveal>
               <div className={s.locLogo}>
                 <Image src={l.logo} alt={`${l.name} logo`} fill sizes="220px" />
               </div>
@@ -198,8 +205,8 @@ export default function Home() {
 
       {/* ------------------------------ about ---------------------------- */}
       <section className={s.about} id="about">
-        <div className={s.aboutGrid}>
-          <div className={s.aboutText}>
+        <div className={s.aboutGrid} data-reveal-group>
+          <div className={s.aboutText} data-reveal="left">
             <div className={s.sectionHead}>
               <span className={s.sectionIndex}>About</span>
               <h2 className={s.sectionTitle}>A small company, on purpose.</h2>
@@ -210,7 +217,7 @@ export default function Home() {
               See the gallery
             </Link>
           </div>
-          <div className={s.aboutPhoto}>
+          <div className={s.aboutPhoto} data-reveal="right">
             <Image
               src="/photos/founders-photo.jpg"
               alt="Jeff and Lynn outside one of their buildings"
@@ -232,13 +239,15 @@ export default function Home() {
           height={268}
           aria-hidden
         />
-        <div className={s.contactInner}>
-          <h2 className={s.contactTitle}>Talk to us.</h2>
-          <p className={s.contactLede}>
+        <div className={s.contactInner} data-reveal-group>
+          <h2 className={s.contactTitle} data-reveal>
+            Talk to us.
+          </h2>
+          <p className={s.contactLede} data-reveal>
             We answer our own phones. Tell us what you&rsquo;re looking for and
             we&rsquo;ll tell you straight whether we have it.
           </p>
-          <div className={s.contactList}>
+          <div className={s.contactList} data-reveal>
             <div className={s.contactItem}>
               <span>Phone</span>
               <a href={company.contact.phoneHref}>{company.contact.phone}</a>
